@@ -3,6 +3,8 @@ package com.aymengabsi.ecommerce.order;
 
 import com.aymengabsi.ecommerce.customer.CustomerClient;
 import com.aymengabsi.ecommerce.exception.BusinessException;
+import com.aymengabsi.ecommerce.kafka.OrderConfirmation;
+import com.aymengabsi.ecommerce.kafka.OrderProducer;
 import com.aymengabsi.ecommerce.orderline.OrderLineRequest;
 import com.aymengabsi.ecommerce.orderline.OrderLineService;
 import com.aymengabsi.ecommerce.product.ProductClient;
@@ -25,7 +27,7 @@ public class OrderService {
 //    private final PaymentClient paymentClient;
     private final ProductClient productClient;
     private final OrderLineService orderLineService;
-//    private final OrderProducer orderProducer;
+    private final OrderProducer orderProducer;
 
     @Transactional
     public Integer createOrder(OrderRequest request) {
@@ -63,15 +65,15 @@ public class OrderService {
 
 
         //Send The Order Confirmation --> notification-ms (Kafka)
-//        orderProducer.sendOrderConfirmation(
-//                new OrderConfirmation(
-//                        request.reference(),
-//                        request.amount(),
-//                        request.paymentMethod(),
-//                        customer,
-//                        purchasedProducts
-//                )
-//        );
+        orderProducer.sendOrderConfirmation(
+                new OrderConfirmation(
+                        request.reference(),
+                        request.amount(),
+                        request.paymentMethod(),
+                        customer,
+                        purchasedProducts
+                )
+        );
 
         return order.getId();
     }
