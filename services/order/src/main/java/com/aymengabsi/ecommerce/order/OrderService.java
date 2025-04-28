@@ -7,6 +7,8 @@ import com.aymengabsi.ecommerce.kafka.OrderConfirmation;
 import com.aymengabsi.ecommerce.kafka.OrderProducer;
 import com.aymengabsi.ecommerce.orderline.OrderLineRequest;
 import com.aymengabsi.ecommerce.orderline.OrderLineService;
+import com.aymengabsi.ecommerce.payment.PaymentClient;
+import com.aymengabsi.ecommerce.payment.PaymentRequest;
 import com.aymengabsi.ecommerce.product.ProductClient;
 import com.aymengabsi.ecommerce.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,7 +26,7 @@ public class OrderService {
     private final OrderRepository repository;
     private final OrderMapper mapper;
     private final CustomerClient customerClient;
-//    private final PaymentClient paymentClient;
+    private final PaymentClient paymentClient;
     private final ProductClient productClient;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
@@ -54,14 +56,14 @@ public class OrderService {
         }
 
         //Start Payment Process
-//        var paymentRequest = new PaymentRequest(
-//                request.amount(),
-//                request.paymentMethod(),
-//                order.getId(),
-//                order.getReference(),
-//                customer
-//        );
-//        paymentClient.requestOrderPayment(paymentRequest);
+        var paymentRequest = new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
 
 
         //Send The Order Confirmation --> notification-ms (Kafka)
