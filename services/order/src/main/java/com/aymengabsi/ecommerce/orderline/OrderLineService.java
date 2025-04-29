@@ -13,6 +13,7 @@ public class OrderLineService {
 
     public Integer saveOrderLine(OrderLineRequest request) {
         var order = mapper.toOrderLine(request);
+        order.setId(null);
         return repository.save(order).getId();
     }
 
