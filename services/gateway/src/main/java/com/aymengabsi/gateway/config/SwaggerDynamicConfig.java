@@ -1,4 +1,4 @@
-package com.aymengabsi.gateway.swagger;
+package com.aymengabsi.gateway.config;
 
 import jakarta.annotation.PostConstruct;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
